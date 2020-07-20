@@ -1,0 +1,45 @@
+---
+- hosts: localhost
+  gather_facts: False
+
+  tasks:
+
+    - name: Provision a set of instances
+      ec2:
+         key_name: kot-ley-nVirginia
+         group: test
+         instance_type: t2.micro
+         image: "{{ami‑0ff8a91507f77f867}}"
+         wait: true
+         exact_count: 1
+         count_tag:
+            Name: webserver
+         instance_tags:
+            Name: webserver
+         vpc_subnet_id: vpc-f100b18b
+         assign_public_ip: yes
+
+#- hosts: webservers
+#  vars:
+#    http_port: 80
+#    max_clients: 200
+#  remote_user: root
+#  tasks:
+#  - name: ensure apache is at the latest version
+#    yum:
+#      name: httpd
+#      state: latest
+#  - name: write the apache config file
+#    template:
+#     dest: /etc/httpd.conf
+#    notify:
+#    - restart apache
+#  - name: ensure apache is running
+#    service:
+#      name: httpd
+#      state: started
+#  handlers:
+#    - name: restart apache
+#      service:
+#        name: httpd
+#        state: restarted
